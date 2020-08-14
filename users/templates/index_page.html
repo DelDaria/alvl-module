@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}Index Page{% endblock %}
+
+{% block content %}
+
+<div style="text-align: center; width: 319px; margin: auto; padding: 10px;">
+    <form method="get" action="users/login">
+        <button type="submit" class="btn btn-dark btn-lg btn-block">Login</button>
+
+<!--        <input type="submit" value="Login">-->
+    </form>
+</div>
+<div style="text-align: center; width: 300px; margin: auto;">
+    <form method="get" action="users/register">
+        <button type="submit" class="btn btn-dark btn-lg btn-block">Registration</button>
+
+<!--        <input type="submit" value="Registration">-->
+    </form>
+</div>
+{% endblock %}

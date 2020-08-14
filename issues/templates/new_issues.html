@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block title %} New Issues {% endblock %}
+
+{% block content %}
+<div style="margin: 50px; ">
+
+{% for issue in issue_list %}
+    <p><a href="{% url 'issue_detail' issue.id %}"><h4>{{ issue.topic }}</h4></a></p>
+    <p>{{issue.priority}}, {{issue.status}}</p>
+    <hr/>
+<p>
+<form action="" method="post">
+        {% csrf_token %}
+        <input type='hidden' name='issue_id' value='{{ issue.id }}'>
+        <input type="submit" value="V Approve" name="approve" class="btn btn-dark">
+</form>
+</p>
+<p>
+<form action="" method="post">
+        {% csrf_token %}
+        <input type='hidden' name='issue_id' value='{{ issue.id }}'>
+        <input type="submit" value="X Decline" name="decline" class="btn btn-dark">
+        <label>Reason for declining: </label>
+        <input type="text" name="reason" maxlength="200" required>
+</form>
+</p>
+<!----------all in one--------->
+<!--    <form action="" method="post">-->
+<!--        {% csrf_token %}-->
+<!--        <input type='hidden' name='issue_id' value='{{ issue.id }}'>-->
+<!--        <label >Reason for declining: </label>-->
+<!--        <input type="text" name="reason" maxlength="200" >-->
+<!--        <input type="submit" value="V Approve" name="approve" class="btn btn-dark">-->
+<!--        <input type="submit" value="X Decline" name="decline" class="btn btn-dark">-->
+<!--    </form>-->
+    <hr style="border-top: 1px solid rgb(66,66,66)"/>
+
+{% empty %}
+    No issues
+{% endfor %}
+</div>
+{% endblock %}

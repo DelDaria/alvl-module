@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ user.username }}| Issues {% endblock %}
+
+{% block content %}
+<div style="margin: 50px; ">
+
+<h3>Hello, {{ user.username }}!</h3>
+
+
+{% if user.is_authenticated and not user.is_superuser%}
+
+<div class="col-5">
+    {% for issue in issue_list %}
+        {% if issue.author == request.user %}
+            <p><a href="{% url 'issue_detail' issue.id %}"><h4>{{ issue.topic }}</h4></a></p>
+            <p>{{issue.priority}}, {{issue.status}}</p>
+                {% if issue.status == 'Draft' %}
+                    {% if issue.i < 1%}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input type='hidden' name='issue_id' value='{{ issue.id }}'>
+
+                            <input type="submit" value="Restore" name="restore" class="btn btn-dark">
+                        </form>
+                    {% else %}
+                        <form action="" method="post">
+                            {% csrf_token %}
+                            <input disabled="disabled" type="submit" value="Restore" class="btn btn-dark">
+                        </form>
+                    {% endif %}
+
+                {% endif %}
+            <hr/>
+        {% endif %}
+    {% empty %}
+        No issues
+    {% endfor %}
+</div>
+
+{% endif %}
+
+{% if user.is_superuser%}
+    {% for issue in issue_list %}
+        <p><a href="{% url 'issue_detail' issue.id %}"><h4>{{ issue.topic }}</h4></a></p>
+    <p><b>Priority:</b> {{issue.priority}} | <b>Status:</b> {{issue.status}}</p>
+        {% if issue.status == 'Pending' %}
+        {% endif %}
+        <hr/>
+    {% empty %}
+            No issues
+    {% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}

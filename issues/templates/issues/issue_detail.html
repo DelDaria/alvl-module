@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Issue {{ issue.id }}{% endblock %}
+
+{% block content %}
+<div style="margin: 50px; ">
+    <h1>{{ issue.topic }}</h1>
+    <h3>Priority: {{ issue.priority }}</h3>
+    <div>Describing: {{ issue.text }}</div>
+    <p>Status: {{ issue.status }}</p>
+
+    {% if not user.is_superuser %}
+    <a href="{% url 'edit_issue' issue.id %}" class="btn btn-dark">Update Issue</a>
+    {% endif %}
+    <br/>
+    <hr/>
+
+<p>Comments: </p>
+    <ul>
+        {% for comment in issue.comment_set.all %}
+            {% if user.is_superuser or user.id == issue.author.id %}
+                <li>
+                    {{ comment.author.username }}: {{ comment.text }}
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% if issue.status == 'Pending' or issue.status == 'In progress'%}
+<form action="" method="post"  enctype='multipart/form-data'>
+    {% csrf_token %}
+   <p> <label>Enter your comment: </label></p>
+<!--    <input type="text" size="50">-->
+    <p><textarea name='comment' cols="80" rows="10"></textarea></p>
+    <button class="btn btn-dark">OK</button>
+</form>
+{% endif %}
+
+<!--<a href="{% url 'new_comment' issue.id %}" class="btn btn-dark">New Comment</a>-->
+
+</div>
+
+
+
+{% endblock %}
